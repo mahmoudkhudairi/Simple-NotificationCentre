@@ -16,9 +16,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        NotificationCenter.default.addObserver(self, selector: #selector(recievedNotification(_:)), name: Notification.Name(rawValue:"LoginNotification"), object: nil)
         return true
     }
-
+    func recievedNotification(_ notification: Notification){
+        if let userInfo = notification.userInfo {
+            if let loggedIn = userInfo["login"] as? Bool{
+                if loggedIn{
+                    displayContent()
+                }else {
+                   displayLogin()
+                }
+            }
+        }
+    }
+    func displayLogin(){
+        let controller = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateInitialViewController()
+        window?.rootViewController = controller
+         window?.rootViewController = controller
+    }
+    func displayContent(){
+        let controller = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "contentNavController")
+         window?.rootViewController = controller
+        
+    }
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
